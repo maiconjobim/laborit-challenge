@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+  laborit-challenge-api:
+    container_name: laborit-challenge-api
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    env_file: .env
+    networks:
+      - api_network
+  
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    environment:
+      - LOG_LEVEL=debug
+    networks:
+      - api_network
+
+networks:
+  api_network:
+volumes:
+  api_db_data:
