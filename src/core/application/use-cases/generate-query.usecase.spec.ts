@@ -76,13 +76,11 @@ describe('GenerateQueryUseCase', () => {
   it('should generate a query successfully', async () => {
     const mockCustomer = new Customer('Test Customer');
     const mockDatabaseConnection = new DatabaseConnection(
-      1,
       mockCustomer,
       'info',
       'username',
       'password',
       'host',
-      new Date(),
     );
     const mockLLMModel = new LLMModel({ modelName: 'gpt' });
     const mockLLMProvider = {
@@ -125,13 +123,11 @@ describe('GenerateQueryUseCase', () => {
   it('should throw an error if LLM model is not activated', async () => {
     const mockCustomer = new Customer('Test Customer');
     const mockDatabaseConnection = new DatabaseConnection(
-      1,
       new Customer('Test Customer'),
       'info',
       'username',
       'password',
       'host',
-      new Date(),
     );
     customerRepository.findCustomerById.mockResolvedValue(mockCustomer);
     databaseConnectionRepository.findByCustomerId.mockResolvedValue(
@@ -147,13 +143,11 @@ describe('GenerateQueryUseCase', () => {
   it('should throw an error if query generation fails', async () => {
     const mockCustomer = new Customer('Test Customer');
     const mockDatabaseConnection = new DatabaseConnection(
-      1,
       new Customer('Test Customer'),
       'info',
       'username',
       'password',
       'host',
-      new Date(),
     );
     const mockLLMModel = new LLMModel({ modelName: 'gpt' });
     const mockLLMProvider = {

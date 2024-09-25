@@ -14,6 +14,7 @@ import { DatabaseConnectionRepository } from './infrastructure/repositories/data
 import { LLMModelRepository } from './infrastructure/repositories/llmModel.repository';
 import { QueryRepository } from './infrastructure/repositories/query.repository';
 import { GenerateQueryUseCase } from './application/use-cases/generate-query.usecase';
+import { GenerateDatabaseInfoUseCase } from './application/use-cases/generate-database-info.usecase';
 
 @Module({
   imports: [
@@ -26,7 +27,10 @@ import { GenerateQueryUseCase } from './application/use-cases/generate-query.use
         LLMModelEntity,
         DatabaseConnectionEntity,
       ],
-      synchronize: true,
+      logger: 'debug',
+      migrations: ['dist/src/core/infrastructure/database/migrations/*.js'],
+      migrationsRun: true,
+      synchronize: false,
     }),
     TypeOrmModule.forFeature([
       QueryEntity,
@@ -40,6 +44,7 @@ import { GenerateQueryUseCase } from './application/use-cases/generate-query.use
   providers: [
     CoreService,
     GenerateQueryUseCase,
+    GenerateDatabaseInfoUseCase,
     CustomerRepository,
     DatabaseConnectionRepository,
     LLMModelRepository,

@@ -30,12 +30,10 @@ export const QueryEntity = new EntitySchema<Query>({
       nullable: true,
     },
     createdAt: {
-      name: 'created_at',
       type: 'datetime',
       createDate: true,
     },
     updatedAt: {
-      name: 'updated_at',
       type: 'datetime',
       updateDate: true,
     },
@@ -61,8 +59,13 @@ export const CustomerEntity = new EntitySchema<Customer>({
       type: String,
       nullable: true,
     },
-    registrationDate: {
-      type: Date,
+    createdAt: {
+      type: 'datetime',
+      createDate: true,
+    },
+    updatedAt: {
+      type: 'datetime',
+      updateDate: true,
     },
   },
   relations: {
@@ -100,6 +103,15 @@ export const LLMModelEntity = new EntitySchema<LLMModel>({
     },
     isActive: {
       type: Boolean,
+      default: false,
+    },
+    createdAt: {
+      type: 'datetime',
+      createDate: true,
+    },
+    updatedAt: {
+      type: 'datetime',
+      updateDate: true,
     },
   },
 });
@@ -107,7 +119,7 @@ export const LLMModelEntity = new EntitySchema<LLMModel>({
 export const DatabaseConnectionEntity = new EntitySchema<DatabaseConnection>({
   name: 'database_connection',
   columns: {
-    connectionId: {
+    id: {
       type: Number,
       primary: true,
       generated: true,
@@ -129,12 +141,21 @@ export const DatabaseConnectionEntity = new EntitySchema<DatabaseConnection>({
     databaseName: {
       type: String,
     },
-    creationDate: {
-      type: Date,
+    schema: {
+      type: String,
+      default: 'public',
     },
     databaseInfo: {
       type: String,
       nullable: true,
+    },
+    createdAt: {
+      type: 'datetime',
+      createDate: true,
+    },
+    updatedAt: {
+      type: 'datetime',
+      updateDate: true,
     },
   },
   relations: {

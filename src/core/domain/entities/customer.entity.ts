@@ -4,9 +4,11 @@ import { Query } from './query.entity';
 export class Customer {
   id: number;
   name: string;
-  registrationDate: Date;
   connections: DatabaseConnection[] = [];
   queries: Query[] = [];
+
+  createdAt: Date;
+  updatedAt: Date;
 
   constructor(name: string) {
     this.name = name;

@@ -24,6 +24,7 @@ export class Query {
     question: string,
     generatedSql: string,
     queryDate: Date,
+    modelName?: string,
     result?: any,
   ) {
     this.customer = customer;
@@ -31,5 +32,6 @@ export class Query {
     this.generatedSql = generatedSql;
     this.queryDate = queryDate;
     this.result = result;
+    this.modelName = modelName;
   }
 }

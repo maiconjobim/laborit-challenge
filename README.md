@@ -1,5 +1,5 @@
 ## Description
-Projeto text to SQL
+Project text to SQL
 
 ## Project setup
 
@@ -19,6 +19,29 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
+## Migrations
+
+```bash
+# create migration
+npm run migration:create -- ./src/core/infrastructure/database/migrations/NOME_DA_MIGRATION
+
+# Run Migrations
+npm run migration:run
+```
+
+## Run on Docker
+
+```bash
+$ docker-compose up
+
+```
+
+
+## Swagger
+
+localhost:3000/api
+
 
 ## Run tests
 

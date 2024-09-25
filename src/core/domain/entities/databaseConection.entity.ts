@@ -1,7 +1,7 @@
 import { Customer } from './customer.entity';
 
 export class DatabaseConnection {
-  connectionId: number;
+  id: number;
 
   customer: Customer;
 
@@ -15,28 +15,28 @@ export class DatabaseConnection {
 
   databaseName: string;
 
-  creationDate: Date;
+  schema: string;
 
   databaseInfo?: string;
 
+  createdAt: Date;
+
+  updatedAt: Date;
+
   constructor(
-    connectionId: number,
     customer: Customer,
     host: string,
     username: string,
     password: string,
     databaseName: string,
-    creationDate: Date,
     port?: number,
     databaseInfo?: string,
   ) {
-    this.connectionId = connectionId;
     this.customer = customer;
     this.host = host;
     this.username = username;
     this.password = password;
     this.databaseName = databaseName;
-    this.creationDate = creationDate;
     if (port) this.port = port;
     if (databaseInfo) this.databaseInfo = databaseInfo;
   }

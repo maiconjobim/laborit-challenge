@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { LLMProviderService } from '../../../llm-provider/llm-proviser.service';
 import { CustomerRepository } from '../../infrastructure/repositories/customer.repository';
 import { DatabaseConnectionRepository } from '../../infrastructure/repositories/databaseConnection.repository';
@@ -22,20 +22,26 @@ export class GenerateQueryUseCase {
     const customer = await this.customerRepository.findCustomerById(customerId);
 
     if (!customer) {
-      throw new Error('Customer not found');
+      throw new BadRequestException('Customer not found');
     }
 
     const databaseConnection =
       await this.databaseConnectionRepository.findByCustomerId(customerId);
 
     if (!databaseConnection) {
-      throw new Error('Database connection not found');
+      throw new BadRequestException('Database connection not found');
+    }
+
+    if (!databaseConnection.databaseInfo) {
+      throw new BadRequestException(
+        'Database info not found, please generate database info first',
+      );
     }
 
     const llmModelActivated = await this.llmModelRepository.findActiveModel();
 
     if (!llmModelActivated) {
-      throw new Error('LLM Provider not activated');
+      throw new BadRequestException('LLM Provider not activated');
     }
 
     const llmProvider = await this.llmProviderService.getLLMProvider(
@@ -47,7 +53,9 @@ export class GenerateQueryUseCase {
     const queryResult = await llmProvider.generateQuery(question);
 
     if (!queryResult.success) {
-      throw new Error(`Error generating query : ${queryResult.error}`);
+      throw new BadRequestException(
+        `Error generating query : ${queryResult.error}`,
+      );
     }
 
     const queryEntity = new Query(
@@ -55,6 +63,7 @@ export class GenerateQueryUseCase {
       question,
       queryResult.query,
       new Date(),
+      llmModelActivated.modelName,
     );
 
     await this.queryRepository.createQuery(queryEntity);

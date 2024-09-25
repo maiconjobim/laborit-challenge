@@ -9,6 +9,10 @@ export class LLMModel {
 
   isActive: boolean;
 
+  createdAt: Date;
+
+  updatedAt: Date;
+
   constructor({ modelName, apiEndpoint, isActive = true }: Partial<LLMModel>) {
     this.modelName = modelName;
     this.apiEndpoint = apiEndpoint;
