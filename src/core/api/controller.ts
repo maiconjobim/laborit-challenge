@@ -1,7 +1,5 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
-import { CoreService } from '../application/core.service';
-import { Customer } from '../domain/entities/customer.entity';
+import { Controller, Post, Body, Param } from '@nestjs/common';
+import { ApiTags, ApiBody } from '@nestjs/swagger';
 import { GenerateQueryUseCase } from '../application/use-cases/generate-query.usecase';
 import { GenerateDatabaseInfoUseCase } from '../application/use-cases/generate-database-info.usecase';
 
@@ -9,7 +7,6 @@ import { GenerateDatabaseInfoUseCase } from '../application/use-cases/generate-d
 @Controller('core')
 export class CoreController {
   constructor(
-    private readonly coreService: CoreService,
     private readonly generateQueryUseCase: GenerateQueryUseCase,
     private readonly generateDatabaseInfoUseCase: GenerateDatabaseInfoUseCase,
   ) {}
@@ -33,10 +30,7 @@ export class CoreController {
   }
 
   @Post(':databaseId/generate-databaseInfo')
-  async generateDatabaseInfo(
-    @Param('databaseId') databaseId: string,
-    //@Body('question') question: string,
-  ) {
+  async generateDatabaseInfo(@Param('databaseId') databaseId: string) {
     return this.generateDatabaseInfoUseCase.execute(parseInt(databaseId));
   }
 }

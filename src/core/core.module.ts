@@ -6,7 +6,6 @@ import {
   LLMModelEntity,
   DatabaseConnectionEntity,
 } from './infrastructure/database/schema';
-import { CoreService } from './application/core.service';
 import { CoreController } from './api/controller';
 import { CustomerRepository } from './infrastructure/repositories/customer.repository';
 import { LlmProviderModule } from 'src/llm-provider/llm-provider.module';
@@ -42,7 +41,6 @@ import { GenerateDatabaseInfoUseCase } from './application/use-cases/generate-da
   ],
   controllers: [CoreController],
   providers: [
-    CoreService,
     GenerateQueryUseCase,
     GenerateDatabaseInfoUseCase,
     CustomerRepository,
@@ -50,6 +48,6 @@ import { GenerateDatabaseInfoUseCase } from './application/use-cases/generate-da
     LLMModelRepository,
     QueryRepository,
   ],
-  exports: [CoreService],
+  exports: [],
 })
 export class CoreModule {}

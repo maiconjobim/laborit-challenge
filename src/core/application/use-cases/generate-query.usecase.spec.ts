@@ -81,6 +81,8 @@ describe('GenerateQueryUseCase', () => {
       'username',
       'password',
       'host',
+      3306,
+      'databaseInfo',
     );
     const mockLLMModel = new LLMModel({ modelName: 'gpt' });
     const mockLLMProvider = {
@@ -128,6 +130,8 @@ describe('GenerateQueryUseCase', () => {
       'username',
       'password',
       'host',
+      3306,
+      'databaseInfo',
     );
     customerRepository.findCustomerById.mockResolvedValue(mockCustomer);
     databaseConnectionRepository.findByCustomerId.mockResolvedValue(
@@ -140,6 +144,40 @@ describe('GenerateQueryUseCase', () => {
     ).rejects.toThrow('LLM Provider not activated');
   });
 
+  it('should throw an error if database info is not found', async () => {
+    const mockCustomer = new Customer('Test Customer');
+    const mockDatabaseConnection = new DatabaseConnection(
+      new Customer('Test Customer'),
+      'info',
+      'username',
+      'password',
+      'host',
+      3306,
+      null,
+    );
+    const mockLLMModel = new LLMModel({ modelName: 'gpt' });
+    const mockLLMProvider = {
+      addDatabaseInfo: jest.fn(),
+      generateQuery: jest.fn().mockResolvedValue({
+        success: true,
+        query: 'SELECT * FROM users',
+      }),
+    };
+
+    customerRepository.findCustomerById.mockResolvedValue(mockCustomer);
+    databaseConnectionRepository.findByCustomerId.mockResolvedValue(
+      mockDatabaseConnection,
+    );
+    llmModelRepository.findActiveModel.mockResolvedValue(mockLLMModel);
+    llmProviderService.getLLMProvider.mockResolvedValue(mockLLMProvider);
+
+    await expect(
+      generateQueryUseCase.execute('Get all users', 1),
+    ).rejects.toThrow(
+      'Database info not found, please generate database info first',
+    );
+  });
+
   it('should throw an error if query generation fails', async () => {
     const mockCustomer = new Customer('Test Customer');
     const mockDatabaseConnection = new DatabaseConnection(
@@ -148,6 +186,8 @@ describe('GenerateQueryUseCase', () => {
       'username',
       'password',
       'host',
+      3306,
+      'databaseInfo',
     );
     const mockLLMModel = new LLMModel({ modelName: 'gpt' });
     const mockLLMProvider = {
